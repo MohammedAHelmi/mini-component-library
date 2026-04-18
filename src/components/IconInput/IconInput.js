@@ -8,20 +8,18 @@ import VisuallyHidden from '../VisuallyHidden';
 
 const styleConfigs = {
   "small": {
-    padding: 4,
-    height: 24,
+    leftPadding: 24,
+    height: 24/16,
     iconSize: 16,
     borderSize: 1,
-    iconTextSpacing: 8,
-    inputHeight: 14
+    iconTextSpacing: 8
   },
   "large": {
-    padding: 6,
-    height: 36,
+    leftPadding: 36,
+    height: 36/16,
     iconSize: 24,
     borderSize: 2,
     iconTextSpacing: 12,
-    inputHeight: 21
   }
 }
 
@@ -35,26 +33,28 @@ const IconInput = ({
   const styleConfig = styleConfigs[size];
 
   return (
-    <Wrapper style={{ '--pading': styleConfig.padding + 'px', '--width': width + 'px', '--height': styleConfig.height + 'px', '--border-size': styleConfig.borderSize + 'px' }}>
+    <Wrapper>
       <VisuallyHidden>{label}</VisuallyHidden>
       <IconWrapper style={{ '--icon-size': styleConfig.iconSize + 'px' }}>
         <Icon id={icon} size={styleConfig.iconSize}></Icon>
       </IconWrapper>
-      <Input type='search' placeholder={placeholder}  style={{ '--input-width': (width - styleConfig.iconSize - styleConfig.iconTextSpacing) + 'px', '--input-height': styleConfig.inputHeight + 'px' }}/>
-      <FocusBox />
+      <Input
+        type='search'
+        placeholder={placeholder} 
+        style= {{ 
+          '--width': width + 'px',
+          '--height': styleConfig.height + 'rem',
+          '--left-padding': styleConfig.leftPadding + 'px',
+          '--border-size': styleConfig.borderSize + 'px'
+        }}
+      />
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
-  isolation: isolate;
   position: relative;
-  height: var(--height);
-  width: var(--width);
-  border-block-end: var(--border-size) solid ${COLORS.black};
-  padding-block: var(--padding);
   color: ${COLORS.gray700};
-
   &:hover {
     color: black;
   }
@@ -68,26 +68,28 @@ const IconWrapper = styled.div`
   margin-block: auto;
   width: var(--icon-size);
   height: var(--icon-size);
-  z-index: 2;
 `
 
 const Input = styled.input`
   all: unset;
-  position: absolute;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  margin: auto;
-  width: var(--input-width);
-  height: var(--input-height);
+  position: relative;
+  height: var(--height);
+  width: var(--width);
+  border-block-end: var(--border-size) solid ${COLORS.black};
+  padding-inline-start: var(--left-padding);
+
   font-weight: 700;
-  z-index: 2;
 
   &:placeholder-shown {
     color: ${COLORS.gray500};
     font-weight: 400;
   }
 
+  &:focus {
+    outline: 2px solid ${COLORS.primary};
+    outline-offset: 2px;
+  }
+  
   &::-webkit-search-decoration,
   &::-webkit-search-cancel-button,
   &::-webkit-search-results-button,
@@ -95,20 +97,6 @@ const Input = styled.input`
     -webkit-appearance: none;
     appearance: none;
     display: none;
-  }
-`;
-
-
-const FocusBox = styled.div`
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  background-color: transparent;
-  outline-offset: 3px;
-  z-index: 1;
-
-  ${Input}:focus + & {
-    outline: 2px solid ${COLORS.primary};
   }
 `;
 
