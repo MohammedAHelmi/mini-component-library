@@ -45,11 +45,11 @@ const PresentationLayer = styled.div`
   background-color: ${COLORS.transparentGray15};
   border-radius: 8px;
 
-  select:hover + & {
+  ${NativeSelect}:hover + & {
     color: ${COLORS.black};
   }
 
-  select:focus + & {
+  ${NativeSelect}:focus + & {
     outline: 2px solid ${COLORS.primary};
   }
 `;
